@@ -1,29 +1,20 @@
 import sqlite3
-import pandas as pd
+from datetime import datetime
 
 from py_scripts import table_utils
-
-_initSchemaScriptName = './sql_scripts/ddl_dml.sql'
-
-def initSchema():
-	conn = sqlite3.connect('./data/BANK.db')
-	try :
-		print('Creating schema...')
-		with open(_initSchemaScriptName, 'r') as f:
-			schema = f.read()
-		conn.executescript(schema)
-		print("Done")
-	except FileNotFoundError as e:
-		print("Could not find a file with test data", "'" + _initSchemaScriptName + "'")
-	conn.commit()
-	conn.close()
+from py_scripts import data_upload_utils
+from py_scripts import project_constants as const
+from py_scripts import init_tables
 
 
-
-#initSchema()
-conn = sqlite3.connect('./data/BANK.db')
-cursor = conn.cursor()
-df = pd.read_excel('./data/passport_blacklist_01032021.xlsx')
-df.to_sql(name='passport_blacklist_tmp', con=conn, if_exists='replace')
-table_utils.showTable(cursor, 'passport_blacklist_tmp')
-conn.close()
+con = sqlite3.connect(const.DB_NAME)
+cursor = con.cursor()
+init_tables.init_schema(con)
+init_tables.init_uploaded_data_tables(con)
+upload_date = datetime.strftime(const.UPLOAD_DATE_START, "%d%m%Y")
+data_upload_utils.upload_daily_data(upload_date, con)
+#table_utils.showTable(cursor, 'STG_TERMINALS')
+#table_utils.showTable(cursor, 'terminals_tmp')
+table_utils.showTable(cursor, 'DWH_DIM_TERMINALS_HIST')
+con.commit()
+con.close()
