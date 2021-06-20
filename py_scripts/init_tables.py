@@ -70,3 +70,19 @@ def init_uploaded_data_tables(con):
 	init_table_passport_blacklist(con.cursor())
 	init_table_terminals(con.cursor())
 	con.commit()
+
+def init_report_table(con):
+	query = """
+	--sql
+	CREATE TABLE if not exists REP_FRAUD(
+		--id integer primary key autoincrement,
+		event_dt date,
+		passport varchar(128),
+		fio varchar(384),
+		phone varchar(128),
+		event_type varchar(384),
+		report_dt date
+	);
+	"""
+	con.cursor().execute(query)
+	con.commit()

@@ -21,4 +21,4 @@ TERMS_TABLE_BUSINESS_COLUMNS = '''
 '''
 INIT_SCHEMA_SCRIPT_NAME = './sql_scripts/ddl_dml.sql'
 DB_NAME = './data/BANK.db'
-UPLOAD_DATE_START = datetime.strptime( "01-03-2021", "%d-%m-%Y")
+UPLOAD_DATE_START = datetime.strptime( "02-03-2021", "%d-%m-%Y")
