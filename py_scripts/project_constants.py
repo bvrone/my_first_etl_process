@@ -4,6 +4,7 @@ from datetime import datetime
 
 DATA_DIR = './data/'
 ARCHIVE_DIR = './archive/'
+REPORT_DIR = './reports/'
 TRANS_TABLE_COLUMNS = '''
 	transaction_id,
 	transaction_date,
@@ -21,4 +22,5 @@ TERMS_TABLE_BUSINESS_COLUMNS = '''
 '''
 INIT_SCHEMA_SCRIPT_NAME = './sql_scripts/ddl_dml.sql'
 DB_NAME = './data/BANK.db'
-UPLOAD_DATE_START = datetime.strptime( "02-03-2021", "%d-%m-%Y")
+UPLOAD_DATE_START = datetime.strptime( "01-03-2021", "%d-%m-%Y")
+REPORT_DATES_COUNT = 3

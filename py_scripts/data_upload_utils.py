@@ -128,9 +128,10 @@ def upload_stg_table(entity_name, file_ext, upload_date, con):
 	else:
 		table_utils.csv2sql(file_path, table_name, con, ';')
 	archive_file_path = const.ARCHIVE_DIR + file_name + '.backup'
-	#os.replace(file_path, archive_file_path)
+	os.replace(file_path, archive_file_path)
 
 def upload_daily_data(upload_date, con):
+	print('Uploading a new data by', upload_date)
 	upload_stg_table('passport_blacklist', '.xlsx', upload_date, con)
 	upload_stg_table('terminals', '.xlsx', upload_date, con)
 	upload_stg_table('transactions', '.txt', upload_date, con)
@@ -138,3 +139,4 @@ def upload_daily_data(upload_date, con):
 	update_table_passport_blacklist(con.cursor())
 	update_table_terminals(con.cursor())
 	con.commit()
+	print('Done')

@@ -3,7 +3,7 @@ import pandas as pd
 
 def showTable(cursor, tableName):
 	cursor.execute(f'select * from {tableName};')
-	print('-_'*10 + "Table " + tableName + '_-'*10)
+	print('-_'*10 + tableName + '_-'*10)
 	print([i[0] for i in cursor.description])
 	for row in cursor.fetchall():
 		print(row)

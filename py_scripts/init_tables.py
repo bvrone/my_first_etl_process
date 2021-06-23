@@ -48,7 +48,7 @@ def init_table_terminals(cursor):
 	query = """
 	--sql
 	CREATE TABLE if not exists DWH_DIM_TERMINALS_HIST(
-		terminal_id varchar(128) primary key,
+		terminal_id varchar(128),
 		terminal_type varchar(128),
 		terminal_city varchar(128),
 		terminal_address varchar(128),
