@@ -1,4 +1,5 @@
 # -*- coding: utf8 -*-
+import os
 import sqlite3
 from datetime import datetime
 from datetime import timedelta
@@ -16,6 +17,8 @@ init_tables.init_schema(con)
 init_tables.init_uploaded_data_tables(con)
 init_tables.init_report_table(con)
 upload_date = const.UPLOAD_DATE_START
+os.makedirs(const.ARCHIVE_DIR, exist_ok=True)
+os.makedirs(const.REPORT_DIR, exist_ok=True)
 
 for _ in range(const.REPORT_DATES_COUNT):
 	upload_date_str = datetime.strftime(upload_date, "%d%m%Y")
