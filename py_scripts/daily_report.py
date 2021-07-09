@@ -108,11 +108,7 @@ def get_fraud_transactions_bad_account(cursor, report_date):
 
 
 # Третий тип фрауд операций:
-# К сожалению, не смог понять, считать ли мошенническими все операции,
-# которые составляют пару с операцией в другом городе в течении часа
-# или лишь те, что были обнаружены в другом городе. 
-# В коде функции оставляю запросы для обоих подходов.
-# Не уверен ни в одном из решений :)
+# Совершение операций в разных городах в течение одного часа.
 def get_fraud_transactions_diff_cities(cursor, report_date):
 	# Запрос создает объединенное view всех таблиц для получения всех необходимых полей
 	query = """
@@ -218,16 +214,15 @@ def get_fraud_transactions_diff_cities(cursor, report_date):
 	;
 	"""
 	cursor.execute(query)
-	#table_utils.showTable(cursor, 'V2_DIFF_CITIES_FROAD_TRANS')
 	cursor.execute('drop view if exists STG_PIVOT_VIEW;')
 	cursor.execute('drop view if exists V_DIFF_CITIES_FROAD_TRANS;')
 	cursor.execute('drop view if exists V2_DIFF_CITIES_FROAD_TRANS;')
 
 # Четвертый тип мошеннических операций:
-# К сожалению, решение не полноценно.
-# Отлавливаются только последовательности равные трем операция в течении 20 минут, что неверно.
-# Насколько я смог понять, это задача типа 'Gaps and Islands'.
-# Пока так и не разобрался, как их решать.
+# Попытка подбора суммы. 
+# В течение 20 минут проходит более 3х операций со следующим шаблоном – 
+# каждая последующая меньше предыдущей, при этом отклонены все кроме последней. 
+# Последняя операция (успешная) в такой цепочке считается мошеннической.
 def get_fraud_transactions_amount_select(cursor, report_date):
 	query = """
 	--sql
